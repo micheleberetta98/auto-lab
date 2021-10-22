@@ -5,6 +5,7 @@ import imutils
 import cv2
 
 orangeLower, orangeUpper = (5, 50, 50), (15, 255, 255)
+blackLower, blackUpper = (0, 0, 0), (179, 255, 50)
 
 camera = cv2.VideoCapture(0)
 
@@ -17,6 +18,10 @@ while True:
     maskOrange = cv2.inRange(hsv, orangeLower, orangeUpper)
     maskOrange = cv2.erode(maskOrange, None, iterations=2)
     maskOrange = cv2.dilate(maskOrange, None, iterations=2)
+
+    maskBlack = cv2.inRange(hsv, blackLower, blackUpper)
+    maskBlack = cv2.erode(maskBlack, None, iterations=2)
+    maskBlack = cv2.dilate(maskBlack, None, iterations=2)
 
     cnts = cv2.findContours(maskOrange.copy(), cv2.RETR_EXTERNAL,
                             cv2.CHAIN_APPROX_SIMPLE)[-2]
@@ -31,6 +36,7 @@ while True:
 
     cv2.imshow("Frame", frame)
     cv2.imshow("Mask Orange", maskOrange)
+    cv2.imshow("Mask Black", maskBlack)
 
     if cv2.waitKey(1) & 0xFF == ord("q"):
         break

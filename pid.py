@@ -1,13 +1,12 @@
 class History():
     def __init__(self):
         self._data = [0, 0, 0, 0, 0, 0, 0, 0]
+        self._len = 8
         self.dx = 0
 
     def add(self, x):
         self._data = [x] + self._data[:-1]
-
-        N = len(self._data)
-        self.dx = (N * self.dx - self._data[-1] + self._data[0]) / N
+        self.dx = sum(self._data) / self._len
 
 
 class PID():

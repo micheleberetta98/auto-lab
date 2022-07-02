@@ -16,11 +16,9 @@ class PID():
         dt = 0.01
         k_inv = -1 if invert else 1
 
-        # Getting the speed avg (for the derivative)
+        # Derivative part
         self.speeds.add(x - self.last_value)
         self.last_value = x
-
-        # Derivative part
         dx = k_inv * saturation_filter(self.speeds.avg())
 
         # Error (proportional part)

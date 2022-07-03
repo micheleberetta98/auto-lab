@@ -11,7 +11,16 @@ class Servo():
         self._max = max_angle
 
     def move_to(self, angle):
-        self.servo.angle = clamp(self._min, self._max)
+        self._set(angle)
+
+    def up(self, delta=10):
+        self._set(self.servo.angle + delta)
+
+    def down(self, delta=10):
+        self._set(self.servo.angle - delta)
+
+    def _set(self, angle):
+        self.servo.angle = clamp(angle, self._min, self._max)
 
 
 if __name__ == '__main__':

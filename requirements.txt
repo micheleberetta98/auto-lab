@@ -2,3 +2,4 @@ opencv-python
 imutils
 gpiozero
 simple-pid
+flask

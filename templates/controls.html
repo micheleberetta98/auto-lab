@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+
+<head>
+  <title>Game Mode</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <h1>Welcome to game mode!</h1>
+
+  Instructions are as follows:
+  <ul>
+    <li>Use WASD to move around the plane</li>
+    <li>Try to balance the ball</li>
+  </ul>
+
+  <p id="out"></p>
+
+  <script>
+    $(document).ready(() => {
+      $(document).keypress(submitKeypress)
+    })
+
+    async function submitKeypress(e) {
+      const key = e.key.toUpperCase()
+      console.log(key)
+      switch (key) {
+        case 'W':
+        case 'A':
+        case 'S':
+        case 'D':
+          $.get(`/keypress?key=${key}`)
+          document.getElementById('out').innerHTML = `Now pressing: ${key}`
+          return
+        default:
+          document.getElementById('out').innerHTML = 'This key does nothing!'
+      }
+    }
+  </script>
+</body>

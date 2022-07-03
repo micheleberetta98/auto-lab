@@ -1,18 +1,17 @@
 from collections import deque
 import argparse
-import imutils
-import cv2
-import cam
+from cam import Camera
 from pid import PID
+import cv2
 
 
 if __name__ == '__main__':
-    camera = cv2.VideoCapture(0)
+    camera = Camera()
     pid_x = PID(0.87195, 0.77878, 0.01, target=300)
     pid_y = PID(0.87195, 0.77878, 0.01, target=150)
 
     while True:
-        (orange, black) = cam.read_position(camera)
+        (orange, black) = camera.read_position()
         if black is not None:
             x, y = black
             print(f'Desired = (300, 150), actual = ({x}, {y})')
@@ -23,4 +22,3 @@ if __name__ == '__main__':
             break
 
     camera.release()
-    cv2.destroyAllWindows()

@@ -34,8 +34,6 @@ class Camera:
 
         if self._show_windows:
             cv2.imshow("Frame", frame)
-            cv2.imshow("Mask Orange", mask_orange)
-            cv2.imshow("Mask Black", mask_black)
 
         if colors == 'all':
             return (c_orange, c_black)

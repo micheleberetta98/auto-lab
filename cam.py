@@ -28,7 +28,7 @@ class Camera:
         (grabbed, frame) = self.camera.read()
         frame = self._rescale(self._crop(frame))
 
-        c_black = (0, 0)
+        c_black = None
         c_orange = self._get_center(self.orange, frame)
         # c_black = self._get_center(self.black, frame)
 

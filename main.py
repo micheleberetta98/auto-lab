@@ -5,7 +5,7 @@ from simple_pid import PID
 
 
 if __name__ == '__main__':
-    camera = Camera()
+    camera = Camera(show_windows=True)
     pid_x = PID(0.87195, 0.77878, 0.01, setpoint=300, sample_time=0.01)
     pid_y = PID(0.87195, 0.77878, 0.01, setpoint=150, sample_time=0.01)
 

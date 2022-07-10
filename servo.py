@@ -9,6 +9,7 @@ class Servo():
         self.servo = AngularServo(pin, min_angle=min_angle, max_angle=max_angle, pin_factory=PiGPIOFactory())
         self._min = min_angle
         self._max = max_angle
+        self.move_to(0)
 
     def move_to(self, angle):
         self._set(angle)
@@ -28,3 +29,10 @@ if __name__ == '__main__':
     for angle in [-100, -75, -50, -25, 0, 25, 50, 75, 100]:
         s.move_to(angle)
         sleep(2)
+    s.move_to(0)
+
+    s = Servo(13)
+    for angle in [-100, -75, -50, -25, 0, 25, 50, 75, 100]:
+        s.move_to(angle)
+        sleep(2)
+    s.move_to(0)

@@ -9,8 +9,8 @@ class Color:
         self.upper = upper
 
 
-crop_offset = (20, 110)
-crop_size = 420
+crop_offset = (5, 110)
+crop_size = 410
 scale = 0.5
 center = (crop_size * scale / 2, crop_size * scale / 2)
 
@@ -20,27 +20,20 @@ class Camera:
         self.camera = cv2.VideoCapture(cid)
         self.set_resolution(640, 480)
 
-        self.black = Color((0, 0, 0), (179, 255, 50))
         self.orange = Color((5, 50, 50), (15, 255, 255))
         self._show_windows = show_windows
 
-    def read_position(self, colors='all'):
+    def read_position(self):
         (grabbed, frame) = self.camera.read()
         frame = self._rescale(self._crop(frame))
 
         c_black = None
         c_orange = self._get_center(self.orange, frame)
-        # c_black = self._get_center(self.black, frame)
 
         if self._show_windows:
             cv2.imshow("Frame", frame)
 
-        if colors == 'all':
-            return (c_orange, c_black)
-        if colors == 'orange':
-            return c_orange
-        if colors == 'black':
-            return c_black
+        return c_orange
 
     def release(self):
         self.camera.release()
@@ -74,9 +67,23 @@ class Camera:
             c = max(cnts, key=cv2.contourArea)
             ((x, y), radius) = cv2.minEnclosingCircle(c)
 
+            if radius < 5:
+                return None
+
             if self._show_windows:
                 cv2.circle(frame, (int(x), int(y)), int(radius), (0, 255, 255), 2)
 
             return (x, y)
 
         return None
+
+
+if __name__ == '__main__':
+    cam = Camer(show_windows=True)
+
+    while True:
+        cam.read_position()
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
+
+    cam.release()

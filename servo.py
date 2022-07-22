@@ -5,7 +5,7 @@ from time import sleep
 
 
 class Servo():
-    def __init__(self, pin, min_angle=-100, max_angle=100):
+    def __init__(self, pin, min_angle=-90, max_angle=90):
         self.servo = AngularServo(pin, min_angle=min_angle, max_angle=max_angle, pin_factory=PiGPIOFactory())
         self._min = min_angle
         self._max = max_angle
@@ -26,13 +26,13 @@ class Servo():
 
 if __name__ == '__main__':
     s = Servo(12)
-    for angle in [-100, -75, -50, -25, 0, 25, 50, 75, 100]:
+    for angle in [-90, -75, -50, -25, 0, 25, 50, 75, 90]:
         s.move_to(angle)
-        sleep(2)
+        sleep(0.5)
     s.move_to(0)
 
     s = Servo(13)
-    for angle in [-100, -75, -50, -25, 0, 25, 50, 75, 100]:
+    for angle in [-90, -75, -50, -25, 0, 25, 50, 75, 90]:
         s.move_to(angle)
-        sleep(2)
+        sleep(0.5)
     s.move_to(0)

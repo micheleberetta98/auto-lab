@@ -8,18 +8,18 @@ from simple_pid import PID
 
 
 def main_loop(open_camera_frame=False):
-    s1 = Servo(12)
-    s2 = Servo(13)
+    s1 = Servo(12, base=BASE_X)
+    s2 = Servo(13, base=BASE_Y)
 
     camera = Camera(show_windows=open_camera_frame)
-    pid_x = create_pid(center[0], BASE_X)
-    pid_y = create_pid(center[1], BASE_Y)
+    pid_x = create_pid(center[0])
+    pid_y = create_pid(center[1], Ku=0.130)
 
     while True:
         orange = camera.read_position()
         if orange is None:
-            s1.move_to(BASE_X)
-            s2.move_to(BASE_Y)
+            s1.move_to(0)
+            s2.move_to(0)
         else:
             (x, y) = orange
             control_x = pid_x(x)
@@ -29,8 +29,8 @@ def main_loop(open_camera_frame=False):
             s2.move_to(control_y)
 
             print(f'Time: {datetime.now()}')
-            print(f'\tAngle x = {control_x}\t\tAngle y = {control_y}')
-            print(f'\Desired = {center}\t\Actual = ({x}, {y})')
+            print(f'\tAngle x = {control_x}\tAngle y = {control_y}')
+            print(f'\tDesired = {center}\tActual = ({x}, {y})')
 
         if cv2.waitKey(1) & 0xFF == ord("q"):
             break
@@ -39,4 +39,4 @@ def main_loop(open_camera_frame=False):
 
 
 if __name__ == '__main__':
-    main_loop(open_camera_frame=True)
+    main_loop(open_camera_frame=False)

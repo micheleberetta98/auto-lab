@@ -4,3 +4,4 @@ gpiozero
 simple-pid
 flask
 waitress
+pygame

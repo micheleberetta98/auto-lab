@@ -1,41 +1,48 @@
 <!DOCTYPE html>
 
 <head>
-  <title>Game Mode</title>
+  <title>PID Ball Balancer</title>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"
     integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 </head>
 
 <body>
-  <h1>Welcome to game mode!</h1>
+  <h1>Welcome to the PID Ball Balancer!</h1>
 
-  Instructions are as follows:
-  <ul>
-    <li>Use WASD to move around the plane</li>
-    <li>Try to balance the ball</li>
-  </ul>
+  <p>
+    Just choose your mode and try it out.
+  </p>
 
-  <p id="out"></p>
+  <p>
+    <input type="radio" id="center" name="mode" value="center" checked="checked" /><label for="center"> Center</label>
+    <br />
+    <input type="radio" id="free" name="mode" value="free" /><label for="free"> Choose your position</label>
+  </p>
+
+  <p>
+    <button id="start">Start</button>
+    <button id="stop">Stop</button>
+    Status: <span id="status">stopped</span>
+  </p>
 
   <script>
-    $(document).ready(() => {
-      $(document).keypress(submitKeypress)
+    function setStatus(status) {
+      $('#status').val(status)
+    }
+
+    $('#start').click(() => {
+      const mode = $('input[name="mode"]:checked').val()
+      if (mode === 'center') {
+        $.get('/pid-center')
+      } else {
+        console.log('Not yet implemented')
+      }
+      setStatus('running')
     })
 
-    async function submitKeypress(e) {
-      const key = e.key.toUpperCase()
-      console.log(key)
-      switch (key) {
-        case 'W':
-        case 'A':
-        case 'S':
-        case 'D':
-          $.get(`/keypress?key=${key}`)
-          document.getElementById('out').innerHTML = `Now pressing: ${key}`
-          return
-        default:
-          document.getElementById('out').innerHTML = 'This key does nothing!'
-      }
-    }
+    $('#stop').click(() => {
+      $.get('/pid-stop')
+      setStatus('stopped')
+    })
   </script>
 </body>

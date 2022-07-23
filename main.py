@@ -7,7 +7,7 @@ from servo import Servo
 from simple_pid import PID
 
 
-if __name__ == '__main__':
+def main_loop():
     s1 = Servo(12)
     s2 = Servo(13)
 
@@ -36,3 +36,7 @@ if __name__ == '__main__':
             break
 
     camera.release()
+
+
+if __name__ == '__main__':
+    main_loop()

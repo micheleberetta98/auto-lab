@@ -3,3 +3,4 @@ imutils
 gpiozero
 simple-pid
 flask
+waitress

@@ -1,12 +1,7 @@
 from collections import deque
+from utils import ColorRange
 import argparse
 import cv2
-
-
-class Color:
-    def __init__(self, lower, upper):
-        self.lower = lower
-        self.upper = upper
 
 
 crop_offset = (5, 110)
@@ -20,7 +15,7 @@ class Camera:
         self.camera = cv2.VideoCapture(cid)
         self.set_resolution(640, 480)
 
-        self.orange = Color((5, 50, 50), (15, 255, 255))
+        self.orange = ColorRange((5, 50, 50), (15, 255, 255))
         self._show_windows = show_windows
 
     def read_position(self):

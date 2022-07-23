@@ -7,11 +7,11 @@ from servo import Servo
 from simple_pid import PID
 
 
-if __name__ == '__main__':
+def main_loop(open_camera_frame=False):
     s1 = Servo(12)
     s2 = Servo(13)
 
-    camera = Camera(show_windows=True)
+    camera = Camera(show_windows=open_camera_frame)
     pid_x = create_pid(center[0], BASE_X)
     pid_y = create_pid(center[1], BASE_Y)
 
@@ -36,3 +36,7 @@ if __name__ == '__main__':
             break
 
     camera.release()
+
+
+if __name__ == '__main__':
+    main_loop(open_camera_frame=True)

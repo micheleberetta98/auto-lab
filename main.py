@@ -26,15 +26,15 @@ if __name__ == '__main__':
     while True:
         orange = camera.read_position()
         if orange is None:
-            s1.move_to(0)
-            s2.move_to(0)
+            s1.move_to(-10)
+            s2.move_to(-15)
         else:
             (x, y) = orange
             control_x = pid_x(x)
             control_y = pid_y(y)
 
-            s1.move_to(control_x)
-            s2.move_to(control_y)
+            s1.move_to(control_x - 10)
+            s2.move_to(control_y - 15)
 
             print(f'Time: {datetime.now()}')
             print(f'\tAngle x = {control_x}\t\tAngle y = {control_y}')

@@ -7,11 +7,11 @@ PORT   		= 8080
 PROD_APP = $(FLASK_APP):app
 PROD_SERVER = waitress-serve
 
-setup:
-	sudo pigpiod
-
 main:
 	$(PYTHON) $(MAIN)
+
+setup:
+	sudo pigpiod
 
 devserver:
 	FLASK_APP=$(FLASK_APP) $(PYTHON) -m flask run --port=$(PORT)

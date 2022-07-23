@@ -15,9 +15,9 @@ class PIDProcess():
     def __init__(self):
         self.p = None
 
-    def start(self, target):
+    def start(self, target, args=()):
         self.stop()
-        self.p = Process(target=target)
+        self.p = Process(target=target, args=args)
         self.p.start()
 
     def stop(self):

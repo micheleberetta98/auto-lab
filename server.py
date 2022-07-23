@@ -1,4 +1,4 @@
-from cam import scale
+from cam import scale, center
 from flask import Flask, render_template, request
 from time import sleep
 from main import main_loop
@@ -18,7 +18,7 @@ def index():
 @app.route('/pid-center')
 def pid_center():
     global p
-    p.start(main_loop, args=('center',))
+    p.start(main_loop, args=(center,))
     return ''
 
 

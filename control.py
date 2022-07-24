@@ -1,6 +1,6 @@
 from simple_pid import PID
 
-BASE_X = -10
+BASE_X = -5
 BASE_Y = -20
 
 Ku = 0.124

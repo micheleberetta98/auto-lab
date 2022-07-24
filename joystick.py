@@ -1,39 +1,61 @@
 import pygame as pg
 import os
 
-from servo import servo
+from servo import Servo
+from control import BASE_X, BASE_Y
 
-# Need to bypass a pygame bug when running without GUI
-os.environ['SDL_VIDEODRIVER'] = 'dummy'
 
-print('Initializing...')
-pg.init()
-pg.display.init()
-pg.display.set_mode((1, 1))  # Again, to bypass the same bug as before
+class Joystick:
+    RIGHT_HANDLE_HOR_AXIS = 3
+    RIGHT_HANDLE_VER_AXIS = 4
 
-pg.joystick.init()
-joystick = pg.joystick.Joystick(0)
-joystick.init()
-print('Joystick OK')
+    def __init__(self, joystick_id=0):
+        # Need to bypass a pygame bug when running without GUI
+        os.environ['SDL_VIDEODRIVER'] = 'dummy'
 
-sx = Servo(12)
-sy = Servo(13)
-print('Servo OK')
+        print('Initializing...')
+        if not pg.get_init():
+            pg.init()
+        if not pg.display.get_init():
+            pg.display.init()
+            pg.display.set_mode((1, 1))  # Again, to bypass the same bug as before
 
-print('Now you can play!')
-print('Use ^C to quit')
+        if not pg.joystick.get_init():
+            pg.joystick.init()
 
-while True:
-    try:
-        pg.event.pump()
+        self.j = pg.joystick.Joystick(joystick_id)
+        if not self.j.get_init():
+            self.j.init()
+        print('Joystick OK')
 
-        x_val = joystick.get_axis(3)
-        y_val = joystick.get_axis(4)
+    def get_handle_value(self, axis):
+        self.j.get_axis(axis)
 
-        sx.move_to(30 * x_val)
-        sy.move_to(30 * y_val)
-
-    except KeyboardInterrupt:
-        joystick.quit()
+    def clear(self):
+        self.j.quit()
         pg.quit()
-        break
+
+
+def event_loop(sensitivity=30):
+    j = Joystick()
+
+    sx = Servo(12, base=BASE_X)
+    sy = Servo(13, base=BASE_Y)
+    print('Servo OK')
+
+    while True:
+        try:
+            pg.event.pump()
+            x_val = j.get_handle_value(Joystick.RIGHT_HANDLE_HOR_AXIS)
+            y_val = j.get_handle_value(Joystick.RIGHT_HANDLE_VER_AXIS)
+
+            sx.move_to(sensitivity * x_val)
+            sy.move_to(sensitivity * yval)
+        except KeyboardInterrupt:
+            break
+
+    j.clear()
+
+
+if __name__ == '__main__':
+    event_loop(sensitivity=30)

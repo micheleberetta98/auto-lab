@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 
 <head>
-  <title>PID Ball Balancer</title>
+  <title>PB&amp;J</title>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"
     integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
@@ -15,7 +15,8 @@
 </head>
 
 <body>
-  <h1>Welcome to the PID Ball Balancer!</h1>
+  <h1>Welcome to the PB&amp;J!</h1>
+  <h3>The <i>PID Ball Balancer &amp; Joystick</i></h3>
 
   <p>
     Just choose your mode and try it out.
@@ -27,10 +28,17 @@
     <br />
     <input type="radio" id="radio-free" name="mode" value="free" />
     <label for="radio-free"> Choose your position</label>
+    <br />
+    <input type="radio" id="radio-joystick" name="mode" value="joystick" />
+    <label for="radio-joystick"> Joystick 😎</label>
   </p>
 
   <canvas id="canvas" style="display: none;"></canvas>
   <p id="position-info" style="display: none;">Current position: <span id="position">(none)</span></p>
+
+  <p id="sensitivity-wrapper" style="display: none;">
+    <input id="sensitivity" type="number" min="5" max="60" step="5" style="width: 100px;" />
+  </p>
 
   <p>
     <button id="start">Start</button>
@@ -54,19 +62,30 @@
       canvasCtx.clearRect(0, 0, canvas.width, canvas.height)
     }
 
-    // Showing/hiding the "canvas"
+    function hideAll() {
+      $('#canvas').hide()
+      $('#position-info').hide()
+      $('#sensitivity-wrapper').hide()
+      $('#position').text('(none)')
+      pos = null
+      clearCanvas()
+    }
+
+    // Showing/hiding the canvas and other inputs
+
+    $('#radio-center').click(() => {
+      hideAll()
+    })
 
     $('#radio-free').click(() => {
+      hideAll()
       $('#canvas').show()
       $('#position-info').show()
     })
 
-    $('#radio-center').click(() => {
-      $('#canvas').hide()
-      $('#position-info').hide()
-      $('#position').text('(none)')
-      pos = null
-      clearCanvas()
+    $('#radio-joystick').click(() => {
+      hideAll()
+      $('#sensitivity-wrapper').show()
     })
 
     // Handling the current position
@@ -91,8 +110,12 @@
       if (mode === 'center') {
         $.get('/pid-center')
         setStatus('running')
-      } else if (pos !== null) {
+      } else if (mode === 'free' && pos !== null) {
         $.get(`/pid-position?posx=${pos.x}&posy=${pos.y}`)
+        setStatus('running')
+      } else if (mode === 'joystick') {
+        const sensitivity = Number($('#sensitivity').val())
+        $.get(`/pid-joystick?sensitivity=${sensitivity}`)
         setStatus('running')
       }
     })

@@ -1,7 +1,7 @@
 from cam import scale, center
 from flask import Flask, render_template, request
-from time import sleep
 from main import main_loop
+from joystick import event_loop
 from utils import PIDProcess
 
 app = Flask(__name__)
@@ -30,6 +30,14 @@ def pid_position():
     target = (target_x, target_y)
 
     p.start(main_loop, args=(target,))
+    return ''
+
+
+@app.route('/pid-joystick')
+def pid_joystick():
+    global p
+    s = int(request.args['sensitivity'])
+    p.start(event_loop, args=(s,))
     return ''
 
 

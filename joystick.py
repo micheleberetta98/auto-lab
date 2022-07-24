@@ -14,8 +14,7 @@ class Joystick:
         os.environ['SDL_VIDEODRIVER'] = 'dummy'
 
         print('Initializing...')
-        if not pg.get_init():
-            pg.init()
+        pg.init()
         if not pg.display.get_init():
             pg.display.init()
             pg.display.set_mode((1, 1))  # Again, to bypass the same bug as before
@@ -29,7 +28,8 @@ class Joystick:
         print('Joystick OK')
 
     def get_handle_value(self, axis):
-        self.j.get_axis(axis)
+        val = self.j.get_axis(axis)
+        return val if val is not None else 0
 
     def clear(self):
         self.j.quit()
@@ -50,7 +50,7 @@ def event_loop(sensitivity=30):
             y_val = j.get_handle_value(Joystick.RIGHT_HANDLE_VER_AXIS)
 
             sx.move_to(sensitivity * x_val)
-            sy.move_to(sensitivity * yval)
+            sy.move_to(sensitivity * y_val)
         except KeyboardInterrupt:
             break
 

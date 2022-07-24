@@ -22,4 +22,5 @@ class PIDProcess():
 
     def stop(self):
         if self.p is not None:
-            self.p.terminate()
+            self.p.kill()
+            self.p = None

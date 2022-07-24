@@ -90,10 +90,11 @@
       const mode = $('input[name="mode"]:checked').val()
       if (mode === 'center') {
         $.get('/pid-center')
-      } else {
+        setStatus('running')
+      } else if (pos !== null) {
         $.get(`/pid-position?posx=${pos.x}&posy=${pos.y}`)
+        setStatus('running')
       }
-      setStatus('running')
     })
 
     $('#stop').click(() => {
